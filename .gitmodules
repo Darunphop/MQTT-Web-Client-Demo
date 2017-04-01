@@ -1,0 +1,6 @@
+[submodule "mqtt"]
+	path = mqtt
+	url = https://github.com/hivemq/hivemq-mqtt-web-client.git
+[submodule "sbadmin2"]
+	path = sbadmin2
+	url = https://github.com/BlackrockDigital/startbootstrap-sb-admin-2.git
