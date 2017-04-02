@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>MQTT - DEMO</title>
+    <title>MQTT Web Client - DEMO</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="sbadmin2/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -36,7 +36,6 @@
 </head>
 
 <body>
-
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -61,6 +60,9 @@
                             <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
+                            <a href="https://github.com/chawasit/MQTT-Web-Client-Demo"><i class="fa fa-github fa-fw"></i> Folk Me on Github</a>
+                        </li>
+                        <li>
                             <a href="#"><i class="fa fa-copyright fa-fw"></i> Credits<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -78,10 +80,13 @@
                                 <li>
                                     <a href="https://jquery.com/">JQuery</a>
                                 </li>
+                                <li>
+                                    <a href="https://zalzer.com/">Zalzer</a>
+                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                    </ul>
+                   </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
             </div>
@@ -97,7 +102,7 @@
             </div>
             <!-- /.row -->
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="col-lg-4 col-md-12 col-sm-12">
                     <div class="panel panel-danger" id="mqtt-panel">
                         <div class="panel-heading">
                             <div class="row">
@@ -105,23 +110,70 @@
                                     <i class="fa fa-close fa-5x" id="mqtt-icon"></i> <!-- fa-close -->
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge" id="mqtt-status">Disconnected</div>
-                                    <div>connection</div>
+                                    <div class="huge" id="mqtt-status">-</div>
+                                    <div>Broker Connection</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="panel panel-danger" id="esp1-panel">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-close fa-5x" id="esp1-icon"></i> <!-- fa-close -->
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge" id="esp1-status">Unknow</div>
+                                    <div>ESP1 Status</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="panel panel-danger" id="esp2-panel">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-close fa-5x" id="esp2-icon"></i> <!-- fa-close -->
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge" id="esp2-status">Unknow</div>
+                                    <div>ESP2 Status</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="panel panel-warning" id="esp1-led-panel">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-toggle-on fa-5x" id="esp1-led-icon"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge" id="esp1-led-status">Unknow</div>
+                                    <div>ESP1 Light Control</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="panel panel-warning" id="led-panel">
+                    <div class="panel panel-warning" id="esp2-led-panel">
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-xs-3">
-                                    <i class="fa fa-toggle-on fa-5x" id="led-icon"></i>
+                                    <i class="fa fa-toggle-on fa-5x" id="esp2-led-icon"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge" id="led-status">Unknow</div>
-                                    <div>Light Control</div>
+                                    <div class="huge" id="esp2-led-status">Unknow</div>
+                                    <div>ESP2 Light Control</div>
                                 </div>
                             </div>
                         </div>
@@ -135,12 +187,12 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Light Sensor
+                            Live Data
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <div class="flot-chart">
-                                <div class="flot-chart-content" id="flot-line-chart-moving"></div>
+                                <div class="flot-chart-content" id="live-chart"></div>
                             </div>
                         </div>
                         <!-- /.panel-body -->
@@ -164,6 +216,9 @@
     <!-- Metis Menu Plugin JavaScript -->
     <script src="sbadmin2/vendor/metisMenu/metisMenu.min.js"></script>
 
+    <!-- Vue JS -->
+    <!-- <script src="https://unpkg.com/vue"></script> -->
+
     <!-- Flot Charts JavaScript -->
     <script src="sbadmin2/vendor/flot/excanvas.min.js"></script>
     <script src="sbadmin2/vendor/flot/jquery.flot.js"></script>
@@ -171,12 +226,15 @@
     <script src="sbadmin2/vendor/flot/jquery.flot.resize.js"></script>
     <script src="sbadmin2/vendor/flot/jquery.flot.time.js"></script>
     <script src="sbadmin2/vendor/flot-tooltip/jquery.flot.tooltip.min.js"></script>
+
+    <!-- MQTT Client JavaScript -->
     <script src="mqtt/js/mqttws31.js"></script>
-    <!-- <script src="sbadmin2/data/flot-data.js"></script> -->
-    <script src="main.js"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="sbadmin2/dist/js/sb-admin-2.js"></script>
+
+    <!-- Application Script -->
+    <script src="main.js"></script>
 
 </body>
 
