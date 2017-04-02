@@ -30,7 +30,7 @@ $(function() {
     // Determine how many data points to keep based on the placeholder's initial size;
     // this gives us a nice high-res plot while avoiding more than one point per pixel.
     var totalPoints = container.outerWidth() / 20 || 100;
-    console.log("totalPoints: "+totalPoints);
+    console.log("Chart: max points = "+totalPoints);
 
     var esp1_sensor_data = [];
     var esp2_sensor_data = [];
@@ -184,7 +184,7 @@ $(function() {
 
     var shift_data = function() {
         if(esp1_sensor_data.length>0 && esp2_sensor_data.length>0 ){
-            var min = Math.min(esp1_sensor_data[0][0], esp2_sensor_data[0][0]);
+            var min = Math.max(esp1_sensor_data[0][0], esp2_sensor_data[0][0]);
             while(esp1_sensor_data.length>0 && esp1_sensor_data[0][0]<min) 
                 esp1_sensor_data.shift();
             while(esp2_sensor_data.length>0 && esp2_sensor_data[0][0]<min) 
@@ -247,9 +247,11 @@ $(function() {
             }
         }else if(topic == ESP1_PING_TOPIC) {
             if(payload == "iamalive") {
-                if(esp1_offline>3)
+                if(esp1_offline>3) {
                     esp1_sensor_data = [];
-                esp1_status.text("UP");
+                    console.log("ESP1: Online");
+                }
+                esp1_status.text("Online");
                 esp1_icon.removeClass("fa-close");
                 esp1_icon.addClass("fa-check");
                 esp1_panel.removeClass("panel-danger");
@@ -261,9 +263,11 @@ $(function() {
             
         }else if(topic == ESP2_PING_TOPIC) {
             if(payload == "iamalive") {
-                if(esp2_offline>3)
+                if(esp2_offline>3) {
                     esp2_sensor_data = [];
-                esp2_status.text("UP");
+                    console.log("ESP2: Online");
+                }
+                esp2_status.text("Online");
                 esp2_icon.removeClass("fa-close");
                 esp2_icon.addClass("fa-check");
                 esp2_panel.removeClass("panel-danger");
@@ -297,20 +301,22 @@ $(function() {
         esp1_offline++;
         esp2_offline++;
         if(esp1_offline>3){
-            esp1_status.text("DOWN");
+            esp1_status.text("Offline");
             esp1_icon.addClass("fa-close");
             esp1_icon.removeClass("fa-check");
             esp1_panel.addClass("panel-danger");
             esp1_panel.removeClass("panel-primary");
             esp1_led_panel.fadeOut();
+            console.log("ESP1: Go Offline");
         }
         if(esp2_offline>3){
-            esp2_status.text("DOWN");
+            esp2_status.text("Offline");
             esp2_icon.addClass("fa-close");
             esp2_icon.removeClass("fa-check");
             esp2_panel.addClass("panel-danger");
             esp2_panel.removeClass("panel-primary");
             esp2_led_panel.fadeOut();
+            console.log("ESP2: Go Offline");
         }
     };
 
