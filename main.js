@@ -85,16 +85,16 @@ $(function() {
                 labelBoxBorderColor: "#fff"
             },
             series: {
-            	points: {
-            		show: true
-            	},
+                points: {
+                    show: true
+                },
                 lines: {
                     show: true,
                     lineWidth: 1.2,
                     fill: true
                 },
                 grid: {
-                	hoverable: true
+                    hoverable: true
                 }
             },
             yaxis: {
