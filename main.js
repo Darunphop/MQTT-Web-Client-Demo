@@ -248,7 +248,6 @@ $(function() {
         }else if(topic == ESP1_PING_TOPIC) {
             if(payload == "iamalive") {
                 if(esp1_offline>3) {
-                    esp1_sensor_data = [];
                     console.log("ESP1: Online");
                 }
                 esp1_status.text("Online");
@@ -264,7 +263,6 @@ $(function() {
         }else if(topic == ESP2_PING_TOPIC) {
             if(payload == "iamalive") {
                 if(esp2_offline>3) {
-                    esp2_sensor_data = [];
                     console.log("ESP2: Online");
                 }
                 esp2_status.text("Online");
@@ -301,6 +299,7 @@ $(function() {
         esp1_offline++;
         esp2_offline++;
         if(esp1_offline>3){
+            esp1_sensor_data = [];
             esp1_status.text("Offline");
             esp1_icon.addClass("fa-close");
             esp1_icon.removeClass("fa-check");
@@ -310,6 +309,7 @@ $(function() {
             console.log("ESP1: Go Offline");
         }
         if(esp2_offline>3){
+            esp2_sensor_data = [];
             esp2_status.text("Offline");
             esp2_icon.addClass("fa-close");
             esp2_icon.removeClass("fa-check");
