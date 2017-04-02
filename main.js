@@ -42,20 +42,12 @@ $(function() {
 
     var dataset = {
         get: function() {
-            console.log(esp1_sensor_data.length +" "+ esp2_sensor_data.length);
-            if(esp1_sensor_data.length>0 && esp2_sensor_data.length>0)
-                return [
-                    { label: "Random ESP1", data: esp1_sensor_data, color: "#00FFee" },
-                    { label: "LDR ESP2", data: esp2_sensor_data, color: "#00FF00" }
-                ];
+            var data = [];
             if(esp1_sensor_data.length>0)
-                return [
-                    { label: "Random ESP1", data: esp1_sensor_data, color: "#00FFee" },
-                ];
+                data.push({ label: "Random ESP1", data: esp1_sensor_data, color: "#00FFee" });
             if(esp2_sensor_data.length>0)
-                return [
-                    { label: "LDR ESP2", data: esp2_sensor_data, color: "#00FF00" }
-                ];
+                data.push({ label: "LDR ESP2", data: esp2_sensor_data, color: "#00FF00" });
+            return data;
         }
     };
 
@@ -93,10 +85,16 @@ $(function() {
                 labelBoxBorderColor: "#fff"
             },
             series: {
+            	points: {
+            		show: true
+            	},
                 lines: {
                     show: true,
                     lineWidth: 1.2,
                     fill: true
+                },
+                grid: {
+                	hoverable: true
                 }
             },
             yaxis: {
@@ -304,7 +302,7 @@ $(function() {
             esp1_icon.removeClass("fa-check");
             esp1_panel.addClass("panel-danger");
             esp1_panel.removeClass("panel-primary");
-            esp1_led_panel.fadeOut(200);
+            esp1_led_panel.fadeOut();
         }
         if(esp2_offline>3){
             esp2_status.text("DOWN");
