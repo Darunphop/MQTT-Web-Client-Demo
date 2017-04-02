@@ -41,22 +41,22 @@ $(function() {
     var esp2_offline = 0;
 
     var dataset = {
-    	get: function() {
-    		console.log(esp1_sensor_data.length +" "+ esp2_sensor_data.length);
-    		if(esp1_sensor_data.length>0 && esp2_sensor_data.length>0)
-	    		return [
-			        { label: "Random ESP1", data: esp1_sensor_data, color: "#00FFee" },
-			        { label: "LDR ESP2", data: esp2_sensor_data, color: "#00FF00" }
-		        ];
-		    if(esp1_sensor_data.length>0)
-	    		return [
-			        { label: "Random ESP1", data: esp1_sensor_data, color: "#00FFee" },
-		        ];
-		    if(esp2_sensor_data.length>0)
-	    		return [
-			        { label: "LDR ESP2", data: esp2_sensor_data, color: "#00FF00" }
-		        ];
-    	}
+        get: function() {
+            console.log(esp1_sensor_data.length +" "+ esp2_sensor_data.length);
+            if(esp1_sensor_data.length>0 && esp2_sensor_data.length>0)
+                return [
+                    { label: "Random ESP1", data: esp1_sensor_data, color: "#00FFee" },
+                    { label: "LDR ESP2", data: esp2_sensor_data, color: "#00FF00" }
+                ];
+            if(esp1_sensor_data.length>0)
+                return [
+                    { label: "Random ESP1", data: esp1_sensor_data, color: "#00FFee" },
+                ];
+            if(esp2_sensor_data.length>0)
+                return [
+                    { label: "LDR ESP2", data: esp2_sensor_data, color: "#00FF00" }
+                ];
+        }
     };
 
     // Update Graph
@@ -169,8 +169,8 @@ $(function() {
             client.subscribe(ESP2_LED_TOPIC, {qos: 2});
 
             // Set default ping message
-		    publish("0", ESP1_PING_TOPIC, 2, true);
-		    publish("0", ESP2_PING_TOPIC, 2, true);
+            publish("0", ESP1_PING_TOPIC, 2, true);
+            publish("0", ESP2_PING_TOPIC, 2, true);
         },
 
         //Gets Called if the connection could not be established
@@ -185,13 +185,13 @@ $(function() {
     client.connect(options);
 
     var shift_data = function() {
-    	if(esp1_sensor_data.length>0 && esp2_sensor_data.length>0 ){
-    		var min = Math.min(esp1_sensor_data[0][0], esp2_sensor_data[0][0]);
-    		while(esp1_sensor_data.length>0 && esp1_sensor_data[0][0]<min) 
-    			esp1_sensor_data.shift();
-    		while(esp2_sensor_data.length>0 && esp2_sensor_data[0][0]<min) 
-    			esp2_sensor_data.shift();
-    	}
+        if(esp1_sensor_data.length>0 && esp2_sensor_data.length>0 ){
+            var min = Math.min(esp1_sensor_data[0][0], esp2_sensor_data[0][0]);
+            while(esp1_sensor_data.length>0 && esp1_sensor_data[0][0]<min) 
+                esp1_sensor_data.shift();
+            while(esp2_sensor_data.length>0 && esp2_sensor_data[0][0]<min) 
+                esp2_sensor_data.shift();
+        }
     }
 
     // Handle incomming subscibed Message from broker
@@ -204,16 +204,16 @@ $(function() {
         if(topic == ESP1_SENSOR_TOPIC) {
             esp1_sensor_data.push([new Date().getTime(), parseInt(payload,10)]);
             if(esp1_sensor_data.length>totalPoints) {
-            	esp1_sensor_data.shift();
-            	shift_data();
+                esp1_sensor_data.shift();
+                shift_data();
             }
             update();
         }else if(topic == ESP2_SENSOR_TOPIC) {
             esp2_sensor_data.push([new Date().getTime(), parseInt(payload,10)]);
             if(esp2_sensor_data.length>totalPoints){
-            	esp2_sensor_data.shift();
-            	shift_data();
-        	}
+                esp2_sensor_data.shift();
+                shift_data();
+            }
             update();
         }else if (topic==ESP1_LED_TOPIC) {
             if(payload == "1") {
@@ -248,32 +248,32 @@ $(function() {
                 esp2_led = false;
             }
         }else if(topic == ESP1_PING_TOPIC) {
-        	if(payload == "iamalive") {
-        		if(esp1_offline>3)
-        			esp1_sensor_data = [];
-        		esp1_status.text("UP");
-	            esp1_icon.removeClass("fa-close");
-	            esp1_icon.addClass("fa-check");
-	            esp1_panel.removeClass("panel-danger");
-	            esp1_panel.addClass("panel-primary");
-	            esp1_led_panel.fadeIn();
-        		esp1_offline = 0;
-        	}
+            if(payload == "iamalive") {
+                if(esp1_offline>3)
+                    esp1_sensor_data = [];
+                esp1_status.text("UP");
+                esp1_icon.removeClass("fa-close");
+                esp1_icon.addClass("fa-check");
+                esp1_panel.removeClass("panel-danger");
+                esp1_panel.addClass("panel-primary");
+                esp1_led_panel.fadeIn();
+                esp1_offline = 0;
+            }
 
-        	
+            
         }else if(topic == ESP2_PING_TOPIC) {
-        	if(payload == "iamalive") {
-        		if(esp2_offline>3)
-        			esp2_sensor_data = [];
-        		esp2_status.text("UP");
-	            esp2_icon.removeClass("fa-close");
-	            esp2_icon.addClass("fa-check");
-	            esp2_panel.removeClass("panel-danger");
-	            esp2_panel.addClass("panel-primary");
-	            esp2_led_panel.fadeIn();
-	            esp2_offline = 0;
-        	}
-        	
+            if(payload == "iamalive") {
+                if(esp2_offline>3)
+                    esp2_sensor_data = [];
+                esp2_status.text("UP");
+                esp2_icon.removeClass("fa-close");
+                esp2_icon.addClass("fa-check");
+                esp2_panel.removeClass("panel-danger");
+                esp2_panel.addClass("panel-primary");
+                esp2_led_panel.fadeIn();
+                esp2_offline = 0;
+            }
+            
         }
     };
 
@@ -296,24 +296,24 @@ $(function() {
     }
 
     var offline_check = function() {
-    	esp1_offline++;
-    	esp2_offline++;
-    	if(esp1_offline>3){
-    		esp1_status.text("DOWN");
-    		esp1_icon.addClass("fa-close");
+        esp1_offline++;
+        esp2_offline++;
+        if(esp1_offline>3){
+            esp1_status.text("DOWN");
+            esp1_icon.addClass("fa-close");
             esp1_icon.removeClass("fa-check");
             esp1_panel.addClass("panel-danger");
             esp1_panel.removeClass("panel-primary");
             esp1_led_panel.fadeOut(200);
-    	}
-    	if(esp2_offline>3){
-    		esp2_status.text("DOWN");
-    		esp2_icon.addClass("fa-close");
+        }
+        if(esp2_offline>3){
+            esp2_status.text("DOWN");
+            esp2_icon.addClass("fa-close");
             esp2_icon.removeClass("fa-check");
             esp2_panel.addClass("panel-danger");
             esp2_panel.removeClass("panel-primary");
             esp2_led_panel.fadeOut();
-    	}
+        }
     };
 
     setInterval(offline_check, 1000);
