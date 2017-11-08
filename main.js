@@ -127,8 +127,9 @@ $(function() {
     }
 
     // Boker info
-    var hostname = "broker.mqttdashboard.com";
-    var port = 8000;
+    // var hostname = "broker.mqttdashboard.com";
+    var hostname = "broker.mqtt-cpe.ml";
+    var port = 9001;
     var clientid = "cpe24-demo-"+parseInt(Math.random() * 100000, 16);
 
     var ESP1_PING_TOPIC = "cpe24mqttdemo/esp1/ping";
